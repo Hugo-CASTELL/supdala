@@ -1,0 +1,14 @@
+{
+  "students": {
+    "Corentin": ["IUT", "N7"],
+    "Antoine": ["N7", "IUT"]
+  },
+  "schools": {
+    "IUT": ["Corentin", "Antoine"],
+    "N7": ["Corentin", "Antoine"]
+  },
+  "capacity": {
+    "IUT": 1,
+    "N7": 2
+  }
+}
