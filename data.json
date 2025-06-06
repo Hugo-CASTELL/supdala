@@ -1,11 +1,12 @@
 {
   "students": {
+    "Hugo": ["IUT", "N7"],
     "Corentin": ["IUT", "N7"],
     "Antoine": ["N7", "IUT"]
   },
   "schools": {
-    "IUT": ["Corentin", "Antoine"],
-    "N7": ["Corentin", "Antoine"]
+    "IUT": ["Corentin","Hugo", "Antoine"],
+    "N7": ["Corentin", "Antoine", "Hugo"]
   },
   "capacity": {
     "IUT": 1,
