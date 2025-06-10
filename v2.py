@@ -42,6 +42,36 @@ def school_matching(dict_students : dict[str, Student], dict_schools : dict[str,
 
     print( {school.name: [student.name for student in school.students] for school in schools})
 
+
+def student_matching(dict_students: dict[str, Student], dict_schools: dict[str, School], proposer='schools'):
+    students = list(dict_students.values())
+    schools_next_queue = list(dict_schools.values())
+
+    while is_queue_containing_schools(schools_next_queue) and are_all_schools_not_full(schools):
+        # Prepare the next queue of students
+        schools_queue = schools_next_queue.copy()
+        schools_next_queue.clear()
+
+        while schools_queue:
+            # Get a free school
+            school = schools_queue.pop()
+
+            if school.is_full():
+                for student in school.students:
+                    if
+
+            else:
+                student = school.pop_student(dict_students)
+
+                school.tu_veux_mec(student)
+
+            # Prepare for the next iteration
+            if not student.should_do_his_math_homework() and student.school is None:
+                schools_next_queue.append(student)
+
+    print({school.name: [student.name for student in school.students] for school in schools})
+
+
 if __name__ == "__main__":
     # Getting data from json file
     with open("data.json", "r") as f:
