@@ -30,6 +30,9 @@ class School:
     def replace_if_least_preferred_student_exists(self, student):
         pass
 
+    def student_is_still_accepted(self, student_name) -> bool:
+        return any(student.name == student_name for student in self.students)
+
 class Student:
     def __init__(self, name, ordered_preferences):
         self.name = name

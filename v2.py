@@ -21,7 +21,8 @@ def school_matching(students : list[Student], schools : list[School], proposer='
 
             if student.school is not None and student.school.is_full():
                 # He asks if he is still accepted
-                student.school = None # TODO
+                if not student.school.student_is_still_accepted(student.name):
+                    student.school = None
 
             elif student.school is None:
                 school = student.pop_school()
