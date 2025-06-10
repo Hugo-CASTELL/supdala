@@ -7,8 +7,9 @@ def is_queue_containing_students(students_next_queue):
 def are_all_schools_not_full(schools):
     return sum([len(school.students) for school in schools]) < sum([school.max_capacity for school in schools])
 
-def school_matching(students : list[Student], schools : list[School], proposer='students'):
-    students_next_queue = students.copy()
+def school_matching(dict_students : dict[str, Student], dict_schools : dict[str, School], proposer='students'):
+    schools = list(dict_schools.values())
+    students_next_queue = list(dict_students.values())
 
     while is_queue_containing_students(students_next_queue) and are_all_schools_not_full(schools):
         # Prepare the next queue of students
@@ -25,18 +26,18 @@ def school_matching(students : list[Student], schools : list[School], proposer='
                     student.school = None
 
             elif student.school is None:
-                school = student.pop_school()
+                school = student.pop_school(dict_schools)
 
-                # If the school has not reached its capacity, student is automatically accepted
+                # If the school has not reached its capacity, student is accepted if ranked in preferences
                 if school.is_not_full():
-                    school.accept(student)
+                    school.accept_if_listed(student)
 
                 # If the school is full, check if the student is preferred over the least preferred student
                 else:
                     school.replace_if_least_preferred_student_exists(student)
 
             # Prepare for the next iteration
-            if student.school is None:
+            if not student.should_do_his_math_homework() and student.school is None:
                 students_next_queue.append(student)
 
     print( {school.name: [student.name for student in school.students] for school in schools})
@@ -52,4 +53,4 @@ if __name__ == "__main__":
         f.close()
     
     # Running the school matching algorithm
-    school_matching(students, schools, proposer='students')
+    school_matching({student.name: student for student in students}, {school.name: school for school in schools}, proposer='students')

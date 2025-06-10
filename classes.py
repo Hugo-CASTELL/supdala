@@ -12,8 +12,10 @@ class School:
     def is_not_full(self):
         return len(self.students) < self.max_capacity
 
-    def accept(self, student):
-        self.students.append(student)
+    def accept_if_listed(self, student):
+        if student.name in self.ordered_student_preferences:
+            self.students.append(student)
+            student.school = self
 
     def add_student(self, student) -> None:
         self.students.append(student)
@@ -28,7 +30,8 @@ class School:
         return False
 
     def replace_if_least_preferred_student_exists(self, student):
-        pass
+        if self.remove_least_wanted_student(student.name):
+            self.accept(student)
 
     def student_is_still_accepted(self, student_name) -> bool:
         return any(student.name == student_name for student in self.students)
@@ -39,5 +42,8 @@ class Student:
         self.ordered_school_preferences = ordered_preferences
         self.school: School | None = None
 
-    def pop_school(self) -> School:
-        return None
+    def pop_school(self, dict_schools) -> School:
+        return dict_schools[self.ordered_school_preferences.pop(0)]
+
+    def should_do_his_math_homework(self):
+        return len(self.ordered_school_preferences) == 0

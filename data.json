@@ -1,15 +1,29 @@
 {
   "students": {
-    "Hugo": ["IUT", "N7"],
-    "Corentin": ["IUT", "N7"],
-    "Antoine": ["N7", "IUT"]
+    "Hugo": ["IUT", "Université", "INP"],
+    "Corentin": ["IUT", "Université", "ENSEEIHT"],
+    "Antoine": ["Université", "IUT", "INP"],
+    "Marie": ["Université", "ENSEEIHT", "ISAE"],
+    "Pierre": ["INP", "IUT", "Université"],
+    "Sophie": ["ISAE", "INP", "Université"],
+    "Thomas": ["ENSEEIHT", "Université", "IUT"],
+    "Laura": ["INP", "ISAE", "Université"],
+    "Nicolas": ["Université", "INP", "IUT"],
+    "Camille": ["ISAE", "ENSEEIHT", "INP"],
+    "José": ["Université", "ENSEEIHT", "ISAE"]
   },
   "schools": {
-    "IUT": ["Corentin","Hugo", "Antoine"],
-    "N7": ["Corentin", "Antoine", "Hugo"]
+    "IUT": ["Corentin", "Hugo", "Antoine", "Pierre", "Thomas", "Nicolas"],
+    "Université": ["Corentin", "Antoine", "Hugo", "Marie", "Pierre", "Sophie", "Thomas", "Laura", "Nicolas", "Camille"],
+    "INP": ["Hugo", "Antoine", "Pierre", "Sophie", "Laura", "Nicolas", "Camille"],
+    "ENSEEIHT": ["Corentin", "Marie", "Thomas", "Camille"],
+    "ISAE": ["Marie", "Sophie", "Laura", "Camille"]
   },
   "capacity": {
     "IUT": 1,
-    "N7": 2
+    "Université": 3,
+    "INP": 2,
+    "ENSEEIHT": 1,
+    "ISAE": 2
   }
 }
