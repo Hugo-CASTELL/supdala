@@ -31,10 +31,19 @@ class School:
 
     def replace_if_least_preferred_student_exists(self, student):
         if self.remove_least_wanted_student(student.name):
-            self.accept(student)
+            self.accept_if_listed(student)
 
     def student_is_still_accepted(self, student_name) -> bool:
         return any(student.name == student_name for student in self.students)
+    
+    def remove_student(self, student) -> None:
+        self.students.remove(student)
+
+    def should_be_better(self) -> bool:
+        return len(self.students) < self.max_capacity and len(self.ordered_student_preferences) == 0
+    
+    def pop_student(self, dict_students):
+        return dict_students[self.ordered_student_preferences.pop(0)]
 
 class Student:
     def __init__(self, name, ordered_preferences):
@@ -47,3 +56,18 @@ class Student:
 
     def should_do_his_math_homework(self):
         return len(self.ordered_school_preferences) == 0
+    
+    def still_accepting(self, school: School) -> bool:
+        return school.name == self.school.name
+    
+    def accept_or_refuse(self, school: School) -> bool:
+        if self.school is None:
+            self.school = school
+            school.add_student(self)
+            return True
+        elif self.ordered_school_preferences.index(school.name) < self.ordered_school_preferences.index(self.school.name):
+            self.school.remove_student(self)
+            self.school = school
+            school.add_student(self)
+            return True
+        return False
