@@ -1,43 +1,49 @@
+import heapq
+
 class School:
     def __init__(self, name, ordered_preferences, max_capacity):
         self.name = name
-        self.ordered_student_preferences = ordered_preferences
         self.max_capacity = max_capacity
 
-        self.students = []
+        self.ordered_student_preferences = ordered_preferences
+        self.student_name_to_preference = {student_name: i for i, student_name in enumerate(ordered_preferences)}
+
+        self.students = {} # priority -> student
+
+    def _get_priority(self, student_name: str) -> int:
+        return self.student_name_to_preference[student_name]
+
+    def _add_student(self, student):
+        priority = self._get_priority(student.name)
+        self.students[priority] = student
+        student.school = self
 
     def is_full(self):
         return len(self.students) == self.max_capacity
 
-    def is_not_full(self):
-        return len(self.students) < self.max_capacity
-
     def accept_if_listed(self, student):
-        if student.name in self.ordered_student_preferences:
-            self.students.append(student)
-            student.school = self
-
-    def add_student(self, student) -> None:
-        self.students.append(student)
-
-    def remove_least_wanted_student(self, candidate_name) -> bool:
-        index_student = self.ordered_student_preferences.index(candidate_name)
-        for student_name in reversed(self.ordered_student_preferences):
-            student = next((s for s in self.students if s.name == student_name), None)
-            if student is not None and self.ordered_student_preferences.index(student.name) > index_student:
-                self.students.remove(student)
-                return True
-        return False
+        if self.student_name_to_preference[student] is not None:
+            self._add_student(student)
 
     def replace_if_least_preferred_student_exists(self, student):
-        if self.remove_least_wanted_student(student.name):
-            self.accept_if_listed(student)
+        index_candidate = self.student_name_to_preference[student.name]
+        index_max = max(self.students.keys())
+
+        # If the candidate is less preferred than the least preferred already accepted
+        if index_candidate > index_max:
+            return False
+
+        # Add the student and pop the max
+        else:
+            self._add_student(student)
+            self.students.pop(index_max)
+            return True
 
     def student_is_still_accepted(self, student_name) -> bool:
-        return any(student.name == student_name for student in self.students)
+        return self.students[self._get_priority(student_name)] is not None
     
     def remove_student(self, student) -> None:
-        self.students.remove(student)
+        self.students.pop(self._get_priority(student.name))
 
     def should_be_better(self) -> bool:
         return len(self.students) < self.max_capacity and len(self.ordered_student_preferences) == 0
@@ -61,13 +67,12 @@ class Student:
         return school.name == self.school.name
     
     def accept_or_refuse(self, school: School) -> bool:
+        # If not accepted a school yet, accepts by default
         if self.school is None:
-            self.school = school
-            school.add_student(self)
             return True
+
+        # Else it tests if he prefers the school between the suggested and the one he already accepted
         elif self.ordered_school_preferences.index(school.name) < self.ordered_school_preferences.index(self.school.name):
-            self.school.remove_student(self)
-            self.school = school
-            school.add_student(self)
             return True
+
         return False
