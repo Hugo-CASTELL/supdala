@@ -99,7 +99,8 @@ if __name__ == "__main__":
         f.close()
     
     # Running the school matching algorithm
-    print("\nStudent Matching (Last word by students iterating schools preferences) :")
+    print("\nStudent Matching (last word by students iterating schools preferences) :")
     student_matching({student.name: student for student in students}, {school.name: school for school in schools})
-    print("\nSchool Matching (Last word by schools iterating students preferences) :")
+
+    print("\nSchool Matching (last word by schools iterating students preferences) :")
     school_matching({student.name: student for student in students2}, {school.name: school for school in schools2})
