@@ -57,6 +57,7 @@ def student_matching(dict_students: dict[str, Student], dict_schools: dict[str, 
             school = schools_queue.pop()
 
             for student in school.get_students():
+                # School asks if everyone is still accepting
                 if not student.still_accepting(school):
                     school.remove_student(student)
 
