@@ -1,4 +1,5 @@
 import json
+import time
 from classes import *
 from utils import *
 
@@ -74,7 +75,7 @@ def student_matching(dict_students: dict[str, Student], dict_schools: dict[str, 
 
 if __name__ == "__main__":
     # Getting data from json file
-    with open("shuffled_data.json", "r") as f:
+    with open("mydata.json", "r") as f:
         data = json.load(f)
 
         students = [Student(name, deep_copy(ordered_preferences)) for name, ordered_preferences in data["students"].items()]
@@ -87,8 +88,13 @@ if __name__ == "__main__":
         f.close()
     
     # Running the school matching algorithm
+    start_time = time.perf_counter()
     student_matching_schools, iterations_student_matching = student_matching({student.name: student for student in students}, {school.name: school for school in schools})
+    spent_time1 = time.perf_counter() - start_time
+
+    start_time = time.perf_counter()
     school_matching_schools, iterations_school_matching = school_matching({student.name: student for student in students2}, {school.name: school for school in schools2})
+    spent_time2 = time.perf_counter() - start_time
 
     # Displaying results
     print("")
@@ -99,7 +105,9 @@ if __name__ == "__main__":
     print(f"Schools max capacity : {get_all_schools_max_capacity(schools)}")
 
     afficher("Student Matching (last word by students iterating schools preferences)", student_matching_schools, iterations_student_matching)
+    print(f"Spent time: {round(spent_time1 * 1000)} ms ({spent_time1:.3f} s)")
     afficher("School Matching (last word by schools iterating students preferences)", school_matching_schools, iterations_school_matching)
+    print(f"Spent time: {round(spent_time2 * 1000)} ms ({spent_time2:.3f} s)")
 
     print("")
 
