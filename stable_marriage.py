@@ -1,6 +1,12 @@
 import json
 from classes import *
 
+def get_all_schools_max_capacity(schools):
+    return sum([school.max_capacity for school in schools])
+
+def get_all_students_count(schools):
+    return sum([len(school.get_students()) for school in schools])
+
 def is_queue_containing_students(students_next_queue):
     return len(students_next_queue) > 0
 
@@ -8,7 +14,7 @@ def is_queue_containing_schools(schools_next_queue):
     return len(schools_next_queue) > 0
 
 def are_all_schools_not_full(schools):
-    return sum([len(school.get_students()) for school in schools]) < sum([school.max_capacity for school in schools])
+    return get_all_students_count(schools) < get_all_schools_max_capacity(schools)
 
 def school_matching(dict_students : dict[str, Student], dict_schools : dict[str, School]):
     schools = list(dict_schools.values())
@@ -46,8 +52,7 @@ def school_matching(dict_students : dict[str, Student], dict_schools : dict[str,
             if student.school is None and not student.should_do_his_math_homework():
                 students_next_queue.append(student)
 
-    print({school.name: [student.name for student in school.get_students()] for school in schools})
-    print(f"Done in {iterations} iterations")
+    return schools,iterations
 
 
 def student_matching(dict_students: dict[str, Student], dict_schools: dict[str, School]):
@@ -79,15 +84,21 @@ def student_matching(dict_students: dict[str, Student], dict_schools: dict[str, 
             if not school.is_full() and not school.should_lower_its_standards() :
                 schools_next_queue.append(school) 
 
-    print({school.name: [student.name for student in school.get_students()] for school in schools})
-    print(f"Done in {iterations} iterations")
+    return schools,iterations
 
 def deep_copy(list_of_str):
     return [str(item) for item in list_of_str]
 
+def afficher(schools):
+    for school in schools:
+        students = school.get_students()
+        print(f"\t{school.name} ({len(students)}/{school.max_capacity}): {[student.name for student in students]}")
+
+    
+
 if __name__ == "__main__":
     # Getting data from json file
-    with open("data.json", "r") as f:
+    with open("shuffled_data.json", "r") as f:
         data = json.load(f)
 
         students = [Student(name, deep_copy(ordered_preferences)) for name, ordered_preferences in data["students"].items()]
@@ -97,10 +108,33 @@ if __name__ == "__main__":
         schools2 = [School(name, deep_copy(ordered_preferences), data["capacity"][name]) for name, ordered_preferences in data["schools"].items()]
 
         f.close()
+
+    # Printing context
+    print("")
+
+    print("Context:")
+    print(f"Students count : {len(students)}")
+    print(f"Schools count : {len(schools)}")
+    print(f"Schools max capacity : {get_all_schools_max_capacity(schools)}")
     
     # Running the school matching algorithm
     print("\nStudent Matching (last word by students iterating schools preferences) :")
-    student_matching({student.name: student for student in students}, {school.name: school for school in schools})
+    student_matching_schools, iterations = student_matching({student.name: student for student in students}, {school.name: school for school in schools})
+    afficher(student_matching_schools)
+    print(f"Iterations: {iterations}")
+    all_students_count = get_all_students_count(student_matching_schools)
+    all_school_max_cap = get_all_schools_max_capacity(student_matching_schools)
+    print(f"Students matched on school capacity: {all_students_count}/{all_school_max_cap} ({all_students_count/all_school_max_cap*100}%)")
 
     print("\nSchool Matching (last word by schools iterating students preferences) :")
-    school_matching({student.name: student for student in students2}, {school.name: school for school in schools2})
+    school_matching_schools, iterations = school_matching({student.name: student for student in students2}, {school.name: school for school in schools2})
+    afficher(school_matching_schools)
+    print(f"Iterations: {iterations}")
+    all_students_count = get_all_students_count(school_matching_schools)
+    all_school_max_cap = get_all_schools_max_capacity(school_matching_schools)
+    print(f"Students matched on school capacity: {all_students_count}/{all_school_max_cap} ({all_students_count/all_school_max_cap*100}%)")
+
+
+    print("")
+
+
