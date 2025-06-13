@@ -9,6 +9,9 @@ with open("./data.json", "r", encoding="utf-8") as f:
 for student, preferences in data["students"].items():
     random.shuffle(preferences)
 
+for school, preferences in data["schools"].items():
+    random.shuffle(preferences)
+
 # Save the shuffled data
 shuffled_path = "./shuffled_data.json"
 with open(shuffled_path, "w", encoding="utf-8") as f:
