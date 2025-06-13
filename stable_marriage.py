@@ -40,7 +40,6 @@ def school_matching(dict_students : dict[str, Student], dict_schools : dict[str,
 
     return schools, iterations
 
-
 def student_matching(dict_students: dict[str, Student], dict_schools: dict[str, School]):
     schools = list(dict_schools.values())
     schools_next_queue = list(dict_schools.values())
@@ -85,7 +84,6 @@ if __name__ == "__main__":
 
     # Printing context
         f.close()
-
     
     # Running the school matching algorithm
     student_matching_schools, iterations_student_matching = student_matching({student.name: student for student in students}, {school.name: school for school in schools})
