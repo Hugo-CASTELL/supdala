@@ -286,7 +286,7 @@ We went for a different approach:
 - We can insert at the right place a new courtier
 - And if the maximum capacity of marriages is reached : we pop the last one of the list -> the least preferred
 
-What it permits ? Instead of an O(n) operation of research, inserting becomes O(log n) with a binary search and popping becomes O(1).
+What it permits ? Instead of an O(nb mariages promised) operation of research, inserting becomes O(log nb mariages promised) with a binary search and popping becomes O(1).
 
 ```python
 class PreferenceNode:
@@ -303,7 +303,7 @@ class DichotomicList:
         self._max_capacity = max_capacity
 
     #
-    # BINARY HERE -> O(log n)
+    # BINARY HERE -> O(log len(_list))
     #
     def insert(self, preference, data):
         # Creating a new node
@@ -323,7 +323,7 @@ class DichotomicList:
         self._list.insert(low, node)
 
     #
-    # INSTANT POPPING HERE -> O(log n) + O(1)
+    # INSTANT POPPING HERE -> O(log len(_list)) + O(1)
     #
     def insert_and_pop(self, preference, data):
         # If the maximum accepted preference is lower than the preference of the insertion candidate, we don't try to insert
