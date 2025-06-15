@@ -1,8 +1,9 @@
-def is_any_courted_not_married(courted_persons):
-    for courted in courted_persons:
-        if not courted.has_promised_marriage():
-            return True
-    return False
+def remove(set, element):
+    # If not present, no errors
+    try:
+        set.remove(element)
+    except KeyError:
+        pass
 
 def deepcopy(string_list: list[str]):
     return [str(s) for s in string_list]

@@ -2,10 +2,9 @@ from typing import Any
 
 from utils import *
 from classes import Courtier, Courted
-from v3.classes import Courtier, Courted
 
 
-def serenade(courtier: Courtier, courted: Courted, tomorrow_queue: set[Courtier]):
+def serenade(courtier: Courtier, courted: Courted, tomorrow_queue: set[Courtier], courted_single_from_rumours: set[Courted]):
     # If the courted person doesn't want of the courtier, the person doesn't even show to the window and the courtier gets a refusal
     if not courted.will_appear_at_the_window_for(courtier):
         return
@@ -31,14 +30,21 @@ def serenade(courtier: Courtier, courted: Courted, tomorrow_queue: set[Courtier]
                     # The refused courtier will need to search love again tomorrow if there are other courted to serenade
                     tomorrow_queue.add(refused_courtier)
 
+            # The refused courtier was drunk at the bar and let a rumour grow in the village
+            # about this courted person has found love (between some bad words of course...)
+            remove(courted_single_from_rumours, courted)
+
 def stable_marriage(courtiers: list[Courtier], courted_persons: list[Courted]) -> tuple[
     int | Any, list[Courtier], list[Courted]]:
     # Initialize a queue as a set so no doubles can be present
     day = 0
     tomorrow_queue: set[Courtier] = set(courtiers.copy())
 
+    # Rumour grows fast in the village about who is still single or not
+    courted_single_from_rumours = set(courted_persons.copy())
+
     # While there are courtiers with courted on their list and courted persons are not all already married, we continue to find stability
-    while tomorrow_queue and is_any_courted_not_married(courted_persons):
+    while tomorrow_queue and courted_single_from_rumours:
         # A new day starts
         day += 1
         today_queue = tomorrow_queue.copy()
@@ -54,7 +60,7 @@ def stable_marriage(courtiers: list[Courtier], courted_persons: list[Courted]) -
             courted = courtier.pop_next_courted_person_to_serenade()
 
             # The courtier serenades the courted
-            serenade(courtier, courted, tomorrow_queue)
+            serenade(courtier, courted, tomorrow_queue, courted_single_from_rumours)
 
             # If the courtier didn't succeed and the courtier still have courted on his list
             if not courtier.has_a_marriage_promise() and courtier.has_courted_persons_to_serenade():
