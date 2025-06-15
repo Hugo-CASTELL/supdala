@@ -1,104 +1,53 @@
-class School:
-    def __init__(self, name, ordered_preferences, max_capacity):
+from dichotomic_list import DichotomicList
+from utils import remove
+
+
+class Courtier:
+    def __init__(self, name, ordered_courted_to_serenade: list[object], max_marriages):
         self.name = name
-        self.max_capacity = max_capacity
+        self._ordered_courted_to_serenade = ordered_courted_to_serenade
 
-        self.ordered_student_preferences = ordered_preferences
-        self.student_name_to_preference = {student_name: i for i, student_name in enumerate(ordered_preferences)}
+        self._marriage_promises: set[object] = set([])
+        self._max_marriages = max_marriages
 
-        self._students = {} # preference -> student
-        self._preference_max_accepted = -1
+    def has_courted_persons_to_serenade(self):
+        return len(self._ordered_courted_to_serenade) > 0
 
-    def _get_preference(self, student_name: str) -> int | None:
-        return self.student_name_to_preference.get(student_name)
+    def pop_next_courted_person_to_serenade(self) -> object:
+        return self._ordered_courted_to_serenade.pop(0)
 
-    def add_student(self, student):
-        preference = self._get_preference(student.name)
-        self._students[preference] = student
-        student.school = self
+    def has_a_marriage_promise(self):
+        return len(self._marriage_promises) == self._max_marriages
 
-        if preference > self._preference_max_accepted:
-            self._preference_max_accepted = preference
+    def enjoy_and_write_marriage_promise(self, courted: object):
+        self._marriage_promises.add(courted)
 
-    def is_full(self):
-        return len(self._students) == self.max_capacity
+    def drink_and_cross_out_marriage_promise(self, courted: object):
+        remove(self._marriage_promises, courted)
 
-    def accept_if_listed(self, student):
-        if self._get_preference(student.name) is not None:
-            self.add_student(student)
-
-    def replace_if_least_preferred_student_exists(self, student):
-        preference_candidate = self._get_preference(student.name)
-        if preference_candidate is not None:
-
-            # If the candidate is less preferred than the least preferred already accepted
-            if preference_candidate > self._preference_max_accepted:
-                return False
-
-            # Add the student and pop the max
-            else:
-                self.add_student(student)
-                self.remove_student(student)
-                return True
-        else:
-            return False
-
-    def student_is_still_accepted(self, student_name) -> bool:
-        return self._students[self._get_preference(student_name)] is not None
-    
-    def remove_student(self, student) -> None:
-        preference = self._get_preference(student.name)
-        self._students.pop(preference)
-
-        if preference == self._preference_max_accepted:
-            self._preference_max_accepted = max(list(self._students.keys())) if len(self._students) > 0 else -1
-
-    def should_lower_its_standards(self) -> bool:
-        return len(self._students) < self.max_capacity and not self.has_candidates_to_contact()
-
-    def pop_student(self, dict_students):
-        return dict_students[self.ordered_student_preferences.pop(0)]
-
-    def get_students(self):
-        return list(self._students.values())
-
-    def has_candidates_to_contact(self):
-        return len(self.ordered_student_preferences) > 0
+    def __str__(self):
+        return f"{self.name} -> {str([courted.name for courted in self._marriage_promises])}"
 
 
-class Student:
-    def __init__(self, name, ordered_preferences):
+class Courted:
+    def __init__(self, name, ordered_courtier_names, max_marriages):
         self.name = name
-        self.school: School | None = None
+        self._preferences: dict[str, int] = {courtier_name: i for i, courtier_name in enumerate(ordered_courtier_names)}
 
-        self.ordered_school_preferences = ordered_preferences
-        self.school_name_to_preference = {school_name: i for i, school_name in enumerate(ordered_preferences)}
+        self._marriage_promises: DichotomicList = DichotomicList(max_marriages)
 
-    def _get_preference(self, school_name: str) -> int | None:
-        return self.school_name_to_preference.get(school_name)
+    def will_appear_at_the_window_for(self, courtier: Courtier) -> bool:
+        return self._preferences.get(courtier.name) is not None
 
-    def pop_school(self, dict_schools) -> School:
-        return dict_schools[self.ordered_school_preferences.pop(0)]
+    def has_promised_marriage(self) -> bool:
+        # As the courted is polygamous, we return the max capacity of marriages is reached
+        return self._marriage_promises.is_full()
 
-    def should_do_his_math_homework(self):
-        return len(self.ordered_school_preferences) == 0
-    
-    def still_accepting(self, school: School) -> bool:
-        return school.name == self.school.name
-    
-    def accept_or_refuse(self, school: School) -> bool:
-        school_preference = self._get_preference(school.name)
+    def accept_proposal(self, courtier: Courtier) -> None:
+        self._marriage_promises.insert(self._preferences[courtier.name], courtier)
 
-        # If the student doesn't want to go to this school, refuse
-        if school_preference is None:
-            return False
+    def debate(self, courtier: Courtier) -> Courtier:
+        return self._marriage_promises.insert_and_pop(self._preferences[courtier.name], courtier)
 
-        # If not accepted a school yet, accepts by default
-        elif self.school is None:
-            return True
-
-        # Else it tests if he prefers the school between the suggested and the one he already accepted
-        elif school_preference < self._get_preference(self.school.name):
-            return True
-
-        return False
+    def __str__(self):
+        return f"{self.name} -> {self._marriage_promises}"

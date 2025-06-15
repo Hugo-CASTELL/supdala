@@ -11,7 +11,7 @@
     "Université": ["Alexis", "Antoine", "Corentin"],
     "ENSEEIHT": ["Antoine", "Corentin", "Hugo"]
   },
-  "capacity": {
+  "capacities": {
     "IUT": 1,
     "Université": 2,
     "ENSEEIHT": 1

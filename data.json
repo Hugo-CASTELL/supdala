@@ -119,7 +119,7 @@
     "CESI": ["Emma", "Sarah", "Nina", "Gaël", "Léna", "Louis", "Lina", "Louise", "Charlotte", "Julia", "Alice", "Olivia", "Zoe2", "Mia", "Louna", "Lucie", "Romane", "Eden"],
     "CentraleSupElec": ["Rémi", "Diane", "Quentin", "Lucas", "Chloé", "Ethan", "Noah", "Adam", "Benjamin", "Sacha"]
   },
-  "capacity": {
+  "capacities": {
     "IUT": 4,
     "Université": 8,
     "ENSIACET": 3,

@@ -15,7 +15,7 @@
     "ENSEEIHT": ["Buisson", "Antoine", "Corentin", "Ken", "Hugo"],
     "ISAE": ["Antoine", "Corentin", "Hugo"]
   },
-  "capacity": {
+  "capacities": {
     "IUT": 2,
     "Université": 2,
     "ENSEEIHT": 2,
