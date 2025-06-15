@@ -414,10 +414,10 @@ The worst complexity of our implementation is O(n * p * log k) :
 ## 5. Performance tests and results
 
 Context:
-Students count : 10000
-Schools count : 55
-Schools sum capacity : 9925
-Iterations : 9022
+- Students count : 10000
+- Schools count : 55
+- Schools sum capacity : 9925
+- Iterations : 9022
 
 1. Command : 
 ```shell
