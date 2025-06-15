@@ -1,0 +1,19 @@
+{
+  "students": {
+    "Hugo": ["IUT", "ENSEEIHT", "Université"],
+    "Corentin": ["IUT", "ENSEEIHT", "Université"],
+    "Antoine": ["ENSEEIHT", "IUT"],
+    "Alexis": ["ENSEEIHT", "IUT"],
+    "Quentin": ["ENSEEIHT", "Université", "IUT"]
+  },
+  "schools": {
+    "IUT": ["Hugo", "Corentin", "Antoine", "Alexis", "Quentin"],
+    "Université": ["Alexis", "Antoine", "Corentin"],
+    "ENSEEIHT": ["Antoine", "Corentin", "Hugo"]
+  },
+  "capacity": {
+    "IUT": 1,
+    "Université": 2,
+    "ENSEEIHT": 1
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "students": {
+    "Hugo": ["IUT", "ENSEEIHT", "Université"],
+    "Corentin": ["IUT", "ENSEEIHT", "Université"],
+    "Antoine": ["ENSEEIHT", "IUT"],
+    "Alexis": ["ENSEEIHT", "IUT"],
+    "Quentin": ["ENSEEIHT", "Université", "IUT"],
+    "Arthur": ["IUT"],
+    "Ken": ["ENSEEIHT", "IUT"],
+    "Buisson": ["ENSEEIHT"]
+  },
+  "schools": {
+    "IUT": ["Arthur", "Ken", "Hugo", "Corentin", "Antoine", "Alexis", "Quentin"],
+    "Université": ["Alexis", "Antoine", "Corentin", "Buisson"],
+    "ENSEEIHT": ["Buisson", "Antoine", "Corentin", "Ken", "Hugo"],
+    "ISAE": ["Antoine", "Corentin", "Hugo"]
+  },
+  "capacity": {
+    "IUT": 2,
+    "Université": 2,
+    "ENSEEIHT": 2,
+    "ISAE": 5
+  }
+}

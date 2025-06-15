@@ -20,7 +20,7 @@ class DichotomicList:
         high = len(self._list) - 1
         while low < high:
             mid = (low + high) // 2
-            if node.preference > self._list[mid].preference:
+            if node.preference < self._list[mid].preference:
                 high = mid
             else:
                 low = mid + 1
